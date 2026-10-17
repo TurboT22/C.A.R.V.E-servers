@@ -1,0 +1,113 @@
+{
+  "_readme": [
+    "Orion Drift master server directory. Commit this file to a PUBLIC GitHub repo and point OrionProductionBrowser > Registry Url at its raw link:",
+    "  https://raw.githubusercontent.com/<owner>/<repo>/<branch>/servers.json",
+    "Keys starting with an underscore (like this one) are ignored by the client, so they are safe inline documentation. Strict JSON: no comments, no trailing commas.",
+    "Clients re-fetch every ~3 minutes and cache the last good copy, so edits go live without a client update.",
+    "Every entry is untrusted input on the client: invalid entries are skipped, rich-text tags are stripped, and hosts resolving to loopback/private/LAN/CGNAT/multicast addresses are blocked.",
+    "Use PUBLIC hostnames or public IPv4 addresses only. Hosts shown below are placeholders."
+  ],
+
+  "schemaVersion": 1,
+  "registryName": "Orion Drift Official Directory",
+  "updatedUtc": "2026-10-16T12:00:00Z",
+
+  "servers": [
+    {
+      "_note": "OFFICIAL CENTRAL WORLD, probed with a TCP connect. ping.port is a TCP port that is open on the host (e.g. a health-check listener). It is NOT the UDP game port.",
+      "id": "official-us-east-1",
+      "name": "Central World US-East",
+      "description": "Official persistent hub",
+      "region": "US-East",
+      "serverType": "CentralWorld",
+      "host": "us-east-1.orion.example.com",
+      "port": 32001,
+      "maxPlayers": 120,
+      "official": true,
+      "accentColor": "#33CCFF",
+      "ping": { "method": "tcp", "port": 32002 }
+    },
+    {
+      "_note": "OFFICIAL, probed with ICMP echo (UnityEngine.Ping). Works on most hosts but some networks drop ICMP; if so, switch to tcp or http.",
+      "id": "official-eu-west-1",
+      "name": "Central World EU-West",
+      "description": "Official persistent hub",
+      "region": "EU-West",
+      "serverType": "CentralWorld",
+      "host": "eu-west-1.orion.example.com",
+      "port": 32001,
+      "maxPlayers": 120,
+      "official": true,
+      "accentColor": "#33CCFF",
+      "ping": { "method": "icmp" }
+    },
+    {
+      "_note": "LIVE EVENT, probed with an HTTPS HEAD request. Hidden after endUtc, shown but 'NOT LIVE' before startUtc, joinable in between. Times are ISO 8601 UTC. Only https URLs are accepted.",
+      "id": "event-winter-cup",
+      "name": "Winter Cup Finals",
+      "description": "Spectate and play the finals",
+      "region": "US-East",
+      "serverType": "LiveEvent",
+      "host": "events.orion.example.com",
+      "port": 32001,
+      "maxPlayers": 200,
+      "official": true,
+      "accentColor": "#FF5C7A",
+      "minClientVersion": "0.1.0",
+      "ping": { "method": "http", "url": "https://events.orion.example.com/health" },
+      "liveEvent": {
+        "title": "Winter Cup",
+        "startUtc": "2026-12-05T19:00:00Z",
+        "endUtc": "2026-12-05T22:00:00Z"
+      }
+    },
+    {
+      "_note": "COMMUNITY SERVER HOSTED AT HOME BEHIND playit.gg. Empty host means tunnel-only, so playit is forced on. playitAddress is the UDP tunnel from the playit.gg dashboard. For latency, create a separate TCP tunnel and put it in ping.playitAddress; without it the node shows '--' and stays joinable.",
+      "id": "community-garage-league",
+      "name": "Garage League",
+      "description": "Friendly community arena",
+      "region": "US-West",
+      "serverType": "CentralWorld",
+      "host": "",
+      "port": 32001,
+      "playitAddress": "garage-league.gl.at.ply.gg:41234",
+      "requirePlayit": true,
+      "maxPlayers": 40,
+      "official": false,
+      "accentColor": "#9B7BFF",
+      "ping": { "method": "tcp", "playitAddress": "garage-league-tcp.gl.at.ply.gg:41235" }
+    },
+    {
+      "_note": "DUAL ROUTE: reachable directly, and also through playit.gg when the player's playit toggle is on. ping.method 'none' skips latency probing (shows '--'), but DNS and address safety are still checked before joining.",
+      "id": "community-asia-1",
+      "name": "Asia Pacific Open",
+      "description": "Community hub, tunnel optional",
+      "region": "Asia-Pacific",
+      "serverType": "CentralWorld",
+      "host": "ap-open.community.example.com",
+      "port": 32001,
+      "playitAddress": "ap-open.gl.at.ply.gg:50111",
+      "maxPlayers": 60,
+      "official": false,
+      "accentColor": "#3DDC97",
+      "minClientVersion": "0.2.0",
+      "ping": { "method": "none" }
+    },
+    {
+      "_note": "MAINTENANCE: listed (so players know it exists) but not joinable and never pinged. maintenanceMessage replaces the description line.",
+      "id": "official-eu-west-2",
+      "name": "Central World EU-West 2",
+      "description": "Official persistent hub",
+      "region": "EU-West",
+      "serverType": "CentralWorld",
+      "host": "eu-west-2.orion.example.com",
+      "port": 32001,
+      "maxPlayers": 120,
+      "official": true,
+      "disabled": true,
+      "maintenanceMessage": "Maintenance until 14:00 UTC",
+      "accentColor": "#33CCFF",
+      "ping": { "method": "tcp", "port": 32002 }
+    }
+  ]
+}
